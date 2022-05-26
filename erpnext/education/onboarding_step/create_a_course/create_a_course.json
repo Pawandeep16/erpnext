@@ -1,0 +1,19 @@
+{
+ "action": "Create Entry",
+ "creation": "2020-07-27 19:09:04.493932",
+ "docstatus": 0,
+ "doctype": "Onboarding Step",
+ "idx": 0,
+ "is_complete": 0,
+ "is_single": 0,
+ "is_skipped": 0,
+ "modified": "2022-05-07 14:55:19.000212",
+ "modified_by": "Administrator",
+ "name": "Create a Course",
+ "owner": "Administrator",
+ "reference_document": "Course",
+ "show_form_tour": 0,
+ "show_full_form": 1,
+ "title": "Create a Course",
+ "validate_action": 1
+}
