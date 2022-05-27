@@ -274,6 +274,26 @@ frappe.ui.form.on("Fees", {
 					}
 				},
 			});
+
+			frappe.call({
+				method: "erpnext.education.api.get_bus_detail",
+				args: { user: frm.doc.program_enrollment },
+				callback: function (r) {
+					if (r.message) {
+						if (r.message[0] == "Institute's Bus") {
+							frappe.msgprint(
+								`The mode of Transportation is ${r.message[0]} and the bus is ${r.message[1]}  `
+							);
+						} else {
+							frappe.msgprint(
+								`The mode of Transportation is ${r.message[0]}  `
+							);
+						}
+						console.log(r.message[0]);
+						console.log(r.message[1]);
+					}
+				},
+			});
 		}
 	},
 
@@ -379,14 +399,14 @@ frappe.ui.form.on("Fees", {
 		for (var i = 0; i < frm.doc.components.length; i++) {
 			grand_total0 += frm.doc.components[i].amount_after_discount;
 		}
-		console.log("fee ala");
+
 		console.log(grand_total0);
 
 		if (frm.doc.bus_component) {
 			for (var i = 0; i < frm.doc.bus_component.length; i++) {
 				grand_total1 += frm.doc.bus_component[i].amount;
 			}
-			console.log("bus ala");
+
 			console.log(grand_total1);
 		}
 

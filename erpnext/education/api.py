@@ -492,3 +492,8 @@ def get_bus_component(bus_component):
                 order_by="idx",
         )
         return fs
+@frappe.whitelist()
+def get_bus_detail(user):
+    r = frappe.db.get_value("Program Enrollment",user,["mode_of_transportation","vehicle_no"])
+    return r
+
