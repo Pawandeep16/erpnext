@@ -494,6 +494,22 @@ def get_bus_component(bus_component):
         return fs
 @frappe.whitelist()
 def get_bus_detail(user):
-    r = frappe.db.get_value("Program Enrollment",user,["mode_of_transportation","vehicle_no"])
+    r = frappe.db.get_value("Program Enrollment",user,["mode_of_transportation","vehicle_no",])
     return r
 
+# @frappe.whitelist()
+# def get_bus_details(user = ""):
+#     bus = frappe.db.sql(f""" SELECT  bus_route,description,amount FROM `tabBus Component` where parenttype = '{user}' """,as_dict = True)
+#     return bus
+
+@frappe.whitelist()
+def get_bus_route(user):
+    r = frappe.db.get_value("Bus Route",user,["category_name","description","amount"])
+    return r
+
+# SELECT child.Id,
+#        child.Name,
+#        child.ParentId,
+#        parent.Name as ParentName
+# FROM your_table child
+# JOIN your_table parent ON child.ParentId = parent.id

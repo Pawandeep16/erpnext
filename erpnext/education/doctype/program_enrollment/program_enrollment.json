@@ -24,6 +24,7 @@
   "mode_of_transportation",
   "column_break_13",
   "vehicle_no",
+  "section_break_18",
   "section_break_7",
   "fees",
   "amended_from",
@@ -131,8 +132,9 @@
   {
    "allow_on_submit": 1,
    "fieldname": "vehicle_no",
-   "fieldtype": "Data",
-   "label": "Vehicle/Bus Number"
+   "fieldtype": "Link",
+   "label": "Vehicle/Bus Number",
+   "options": "Bus Route"
   },
   {
    "fieldname": "enrolled_courses",
@@ -172,12 +174,16 @@
    "fieldtype": "Attach Image",
    "hidden": 1,
    "label": "Image"
+  },
+  {
+   "fieldname": "section_break_18",
+   "fieldtype": "Section Break"
   }
  ],
  "image_field": "image",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-05-25 21:55:03.768165",
+ "modified": "2022-05-28 14:35:33.255451",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Program Enrollment",

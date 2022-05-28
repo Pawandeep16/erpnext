@@ -274,31 +274,46 @@ frappe.ui.form.on("Fees", {
 					}
 				},
 			});
-
 			frappe.call({
 				method: "erpnext.education.api.get_bus_detail",
 				args: { user: frm.doc.program_enrollment },
 				callback: function (r) {
 					if (r.message) {
+						var route = r.message[1];
+						console.log(route);
 						if (r.message[0] == "Institute's Bus") {
 							frappe.msgprint(
 								`The mode of Transportation is ${r.message[0]} and the bus is ${r.message[1]}  `
 							);
 						} else {
 							frappe.msgprint(
-								`The mode of Transportation is ${r.message[0]}  `
+								`The mode of Transportation is ${r.message[0]} `
 							);
 						}
-						console.log(r.message[0]);
-						console.log(r.message[1]);
+						frappe
+							.call({
+								method: "erpnext.education.api.get_bus_route",
+								args: { user: route },
+							})
+							.done((r) => {
+								let entry = frm.add_child("bus_component");
+								console.log(r.message);
+								entry.bus_route = r.message[0];
+								entry.description = r.message[1];
+								entry.amount = r.message[2];
+								refresh_field("bus_component");
+							});
 					}
 				},
 			});
 		}
 	},
 
-	// Sibings end
+	// transportation_detail: function (frm) {
 
+	// },
+
+	// Sibings end
 	calculate_no_of_siblings: function (frm) {
 		frm.set_value("no_of_siblings", 0);
 		if (frm.doc.siblings) {
@@ -431,8 +446,6 @@ frappe.ui.form.on("Fees", {
 		frm.trigger("calculate_total_amount");
 		frm.refresh_field("grand_total");
 	},
-	// Bus calc
-
 	// MD END
 
 	// changes
@@ -480,10 +493,13 @@ frappe.ui.form.on("Fee Component", {
 		frm.trigger("calculate_total_amount");
 	},
 });
+
 frappe.ui.form.on("Bus Component", {
 	// amount_after_discount: function (frm, cdt, cdn) {
 	// },
-
+	bus_route: function (frm) {
+		frm.trigger("calculate_total_amount");
+	},
 	amount: function (frm) {
 		frm.trigger("calculate_total_amount");
 	},
