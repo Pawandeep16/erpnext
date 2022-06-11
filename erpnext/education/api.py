@@ -13,7 +13,7 @@ from frappe import _
 from frappe.email.doctype.email_group.email_group import add_subscribers
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import cstr, flt, getdate
-
+from frappe.utils import today
 
 def get_course(program):
     """Return list of courses for a particular program
@@ -450,7 +450,6 @@ def get_current_enrollment(student, academic_year=None,):
 @frappe.whitelist()
 def get_sibling_details(student):
     """Returns Student Sibling.
-
     :param student: Student.
     """
     if student:
@@ -507,9 +506,22 @@ def get_bus_route(user):
     r = frappe.db.get_value("Bus Route",user,["category_name","description","amount"])
     return r
 
-# SELECT child.Id,
-#        child.Name,
-#        child.ParentId,
-#        parent.Name as ParentName
-# FROM your_table child
-# JOIN your_table parent ON child.ParentId = parent.id
+@frappe.whitelist()
+def get_programEnrollment_details(user):
+    bus = frappe.db.sql(f""" SELECT name,program,academic_year,academic_term FROM `tabProgram Enrollment` where student = '{user}' """,as_dict = True)
+    return bus
+
+@frappe.whitelist()
+def get_fee_list():
+    d = frappe.get_list('Fees', filters={'docstatus': "Draft",}, fields=['student','student_name', 'due_date', 'outstanding_amount'], order_by='outstanding_amount')   
+    return d
+
+@frappe.whitelist()
+def get_over_due():
+    due = frappe.db.sql(f""" SELECT name,student,student_name,academic_year,due_date,outstanding_amount  FROM `tabFees` where due_date <= '{today()}' and outstanding_amount > 0 """,as_dict = True)
+    return due
+
+@frappe.whitelist()
+def get_paid():
+    paid = frappe.db.sql(f""" SELECT name,student,student_name,academic_year,due_date,outstanding_amount  FROM `tabFees` where  outstanding_amount = 0 """,as_dict = True)
+    return paid
